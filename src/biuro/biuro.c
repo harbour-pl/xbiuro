@@ -1,6 +1,6 @@
 /*
  * Program...: xBiuro
- * Plik......: src/biuro.c
+ * Plik......: src/biuro/biuro.c
  *
  */
 
@@ -13,7 +13,7 @@
 
 #define FONT_ICONS PROG_ZASO "font/codicon.ttf"
 
-/* Okno postępu: pasek wypełnia się w pół sekundy, żeby użytkownik widział, że program pracuje */
+/* Okno postępu */
 typedef struct
 {
    Win     *okno;
@@ -38,20 +38,20 @@ static void  UstawFirme( Biuro *biuro, int firma );
 static void  Tytul( Win *win, void *data );
 static void  WybierzFirme( Sidebar *sidebar, int wiersz, void *data );
 static void  DodajFirme( Win *win, void *data );
+static void  PostepKrok( Timer *timer, void *data );
+static void  Postep( Biuro *biuro, const char *tekst );
 static void  PodkatalogiFirmy( Biuro *biuro, int firma );
 static void  NowyRok( Biuro *biuro, const char *cPoprzedni, int firma );
 static void  Moduly( Biuro *biuro );
+static void  Ustawienia( Win *win, void *data );
+static void  Archiwizacja( Win *win, void *data );
+static void  Odtworzenie( Win *win, void *data );
+static void  Indeksowanie( Win *win, void *data );
 static void  Modul( Win *win, void *data );
 static void  WybierzModul( Sidebar *sidebar, int wiersz, void *data );
 static void  ZamknijModul( Biuro *biuro );
 static xBool WywolajModul( Biuro *biuro, int nModul, const char *cFunkcja );
 static void  PrzelaczAdministratora( Win *win, void *data );
-static void  PostepKrok( Timer *timer, void *data );
-static void  Postep( Biuro *biuro, const char *tekst );
-static void  Ustawienia( Win *win, void *data );
-static void  Archiwizacja( Win *win, void *data );
-static void  Odtworzenie( Win *win, void *data );
-static void  Indeksowanie( Win *win, void *data );
 static void  Informacja( Win *win, void *data );
 static void  Zakoncz( Win *win, void *data );
 static void  ZmianaFirmy( Biuro *biuro );
@@ -374,7 +374,7 @@ static void Tytul( Win *win, void *data )
 static void WybierzFirme( Sidebar *sidebar, int wiersz, void *data )
 {
    Biuro *biuro = ( Biuro * )data;
-   int    firma  = biuro->numery[ wiersz - 1 ];
+   int    firma = biuro->numery[ wiersz - 1 ];
    char   tekst[ 48 ];
 
    UNUSED( sidebar );
@@ -391,7 +391,7 @@ static void WybierzFirme( Sidebar *sidebar, int wiersz, void *data )
 static void DodajFirme( Win *win, void *data )
 {
    Biuro *biuro = ( Biuro * )data;
-   int    firma  = biuro->numery[ biuro->liczbaFirm - 1 ] + 1;
+   int    firma = biuro->numery[ biuro->liczbaFirm - 1 ] + 1;
    char   pytanie[ 160 ];
    char   katalog[ 32 ];
 
@@ -515,7 +515,7 @@ static void Moduly( Biuro *biuro )
    Akcje menu
    --------------------------------------------------------------------------------------------- */
 
-// Ustawienia programu
+// Ustawienia programu: na razie sam komunikat
 // Ustawienia( win, data ) --> void
 static void Ustawienia( Win *win, void *data )
 {
@@ -525,7 +525,7 @@ static void Ustawienia( Win *win, void *data )
    MsgInfo( "Ustawienia", "" );
 }
 
-// archiwizacja.prg
+// Archiwizacja baz danych z archiwizacja.prg: jeszcze pusta
 // Archiwizacja( win, data ) --> void
 static void Archiwizacja( Win *win, void *data )
 {
@@ -533,7 +533,7 @@ static void Archiwizacja( Win *win, void *data )
    UNUSED( data );
 }
 
-// odtworzenie.prg
+// Odtworzenie baz danych z odtworzenie.prg: jeszcze puste
 // Odtworzenie( win, data ) --> void
 static void Odtworzenie( Win *win, void *data )
 {
@@ -541,7 +541,7 @@ static void Odtworzenie( Win *win, void *data )
    UNUSED( data );
 }
 
-// Indeksowanie() z xbiuro.prg
+// Indeksowanie i czyszczenie tabel, jak Indeksowanie() z xbiuro.prg
 // Indeksowanie( win, data ) --> void
 static void Indeksowanie( Win *win, void *data )
 {
@@ -565,7 +565,6 @@ static void Indeksowanie( Win *win, void *data )
    }
 }
 
-
 // Moduł z paska bocznego; na razie komunikat
 // Modul( win, data ) --> void
 static void Modul( Win *win, void *data )
@@ -577,7 +576,6 @@ static void Modul( Win *win, void *data )
    StringFormat( cTekst, "Moduł %s w przygotowaniu.", ( const char * )data );
    MsgInfo( cTekst, "Moduły" );
 }
-
 
 // Podwójny klik na module na pasku bocznym: moduł albo informacja, czemu jest niedostępny
 // WybierzModul( sidebar, wiersz, data ) --> void

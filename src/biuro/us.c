@@ -1,6 +1,6 @@
 /*
  * Program...: xBiuro
- * Plik......: src/us.c
+ * Plik......: src/biuro/us.c
  *
  */
 
@@ -8,7 +8,7 @@
 
 #include "biuro.h"
 
-/* Pola tabeli us z państwowych druków i danych KAS (zasada 13); te same pola ma narzędzie tmp/us-import */
+/* Pola tabeli us z państwowych druków i danych KAS (zasada 13) */
 static const DbField aDbf[] = {
    { "TYP",                'C',   4, 0 },   /* dane KAS: US, WUS */
    { "KOD_URZEDU",         'C',   4, 0 },   /* KodyUrzedowSkarbowych */
@@ -223,6 +223,7 @@ void UsPokaz( Urzad *urzad, const char *kod )
 static xBool Kartoteka( Win *win, xBool lWybor, char *kod, int rozmiarKodu, char *nazwa, int rozmiarNazwy )
 {
    static const char *nazwyZakladek[] = { "Dane urzędu", "Dane kontaktowe" };
+
    OknoUs   oknoUs   = { 0 };
    OknoUs  *oOkno    = &oknoUs;
    Toolbar *pasek;

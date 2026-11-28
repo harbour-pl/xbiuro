@@ -1,3 +1,9 @@
+/*
+ * Program...: xBiuro
+ * Plik......: src/biuro/biuro.h
+ *
+ */
+
 #ifndef BIURO_H
 #define BIURO_H
 

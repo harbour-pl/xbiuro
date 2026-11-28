@@ -1,6 +1,6 @@
 /*
  * Program...: xBiuro
- * Plik......: src/netuse.c
+ * Plik......: src/biuro/netuse.c
  *
  */
 

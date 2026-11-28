@@ -1,6 +1,6 @@
 /*
  * Program...: xBiuro
- * Plik......: src/kontrahent.c
+ * Plik......: src/biuro/kontrahent.c
  *
  */
 

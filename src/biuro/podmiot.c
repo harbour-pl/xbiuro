@@ -1,6 +1,6 @@
 /*
  * Program...: xBiuro
- * Plik......: src/podmiot.c
+ * Plik......: src/biuro/podmiot.c
  *
  * Wzór podmiotu, wspólny dla firmy (dane-RRRR/firmaN/firma.dbf) i kontrahenta (dane-baza/kartoteka/kontrah.dbf):
  * pola tabeli, zakładki okna, pokazywanie i poprawianie danych. Układ według NIP-2 i NIP-8 (zasada 9)

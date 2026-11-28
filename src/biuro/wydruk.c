@@ -1,6 +1,6 @@
 /*
  * Program...: xBiuro
- * Plik......: src/wydruk.c
+ * Plik......: src/biuro/wydruk.c
  *
  * Wydruki PDF (libharu) wspólne dla modułów, według wydruk.prg z xFaktura: czcionka, tekst, znak programu na stronie
  * i karta podmiotu (firmy albo kontrahenta) ze wszystkimi danymi w kolejności zakładek okna
@@ -216,7 +216,7 @@ void WydrukStrona( HPDF_Page pPage, HPDF_Font pFont, HPDF_Font pBold, double nX,
 
 void WydrukQr( HPDF_Page pPage, const char *cTekst, double nX, double nY, double nRozmiar )
 {
-   unsigned char *aModul = ( unsigned char * )malloc( QR_MAX_SIZE * QR_MAX_SIZE );
+   unsigned char *aModul  = ( unsigned char * )malloc( QR_MAX_SIZE * QR_MAX_SIZE );
    int            nRzedow = QrEncode( cTekst, QR_ECC_MEDIUM, aModul );
    double         nModul;
    int            nOd;

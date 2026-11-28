@@ -1,6 +1,6 @@
 /*
  * Program...: xBiuro
- * Plik......: src/dbbrowse.c
+ * Plik......: src/biuro/dbbrowse.c
  *
  * Browse na tabeli DBF, jak bloki guiBrowse w kartotekach xDev (us.prg): początek, koniec, przesunięcie, miejsce na
  * pasku przewijania i pusta tabela. Alias tabeli przychodzi jako data; akcje wybierają jej obszar i go zostawiają

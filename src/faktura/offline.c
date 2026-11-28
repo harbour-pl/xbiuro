@@ -32,8 +32,9 @@ static int   Wielkanoc( int nRok );
 
 void Offline( Win *okno, Biuro *biuro, Control *browse )
 {
-   char *cXml  = NULL;
-   int   nTryb = 0;
+   char *cXml    = NULL;
+   int   nTryb   = 0;
+   int   dKoniec = 0;
    int   nSrodowisko;
    int   dTermin;
    xBool lZapis;
@@ -41,6 +42,7 @@ void Offline( Win *okno, Biuro *biuro, Control *browse )
    char  cNumer[ 300 ];
    char  cData[ 16 ];
    char  cPlik[ 400 ];
+   char  cKoniec[ 200 ];
    char  cTekst[ 1000 ];
 
    DbSelectArea( "FKTHEAD" );
@@ -81,7 +83,7 @@ void Offline( Win *okno, Biuro *biuro, Control *browse )
    nSrodowisko = IIF( FieldGetN( FieldPos( "SRODOWISKO_KSEF" ) ) == SRODOWISKO_PRODUKCYJNE, SRODOWISKO_PRODUKCYJNE, SRODOWISKO_TESTOWE );
 
    if( Warunki( cNip, nSrodowisko ) )
-      nTryb = WybierzTryb( okno, cNumer );
+      nTryb = WybierzTryb( okno, cNumer, &dKoniec );
 
    if( nTryb > 0 )
       cXml = Fa3GenerujXml( "SPRZEDAWCA" );
@@ -103,7 +105,7 @@ void Offline( Win *okno, Biuro *biuro, Control *browse )
       return;
    }
 
-   dTermin = Termin( nTryb, FieldGetD( FieldPos( "DATA_WYSTAWIENIA" ) ) );
+   dTermin = Termin( nTryb, FieldGetD( FieldPos( "DATA_WYSTAWIENIA" ) ), dKoniec );
 
    DbSelectArea( "FKTHEAD" );
    if( !NetRLock( NET_WAIT ) )
@@ -119,7 +121,11 @@ void Offline( Win *okno, Biuro *biuro, Control *browse )
    DbUnlock();
    BrowseRefresh( browse );
 
-   StringFormat( cTekst, "Faktura %s wystawiona w trybie %s.\n\nWydruk (F9) ma kod QR faktury (OFFLINE) i kod QR certyfikatu.\nWyślij fakturę do KSeF (F6) do dnia %s.%s", cNumer, OfflineTryb( nTryb ), DToC( dTermin, cData, sizeof( cData ) ), IIF( nTryb == 1, "", "\nJeśli awaria lub niedostępność KSeF potrwa dłużej,\ntermin liczy się od dnia jej zakończenia." ) );
+   *cKoniec = 0;
+   if( nTryb > 1 )
+      StringFormat( cKoniec, "\nTermin liczy się od dnia zakończenia niedostępności lub awarii KSeF (%s).", DToC( dKoniec, cData, sizeof( cData ) ) );
+
+   StringFormat( cTekst, "Faktura %s wystawiona w trybie %s.\n\nWydruk (F9) ma kod QR faktury (OFFLINE) i kod QR certyfikatu.\nWyślij fakturę do KSeF (F6) do dnia %s.%s", cNumer, OfflineTryb( nTryb ), DToC( dTermin, cData, sizeof( cData ) ), cKoniec );
    MsgInfo( cTekst, "Offline" );
 }
 
@@ -356,23 +362,32 @@ static void P1363( Bytes *podpis )
    podpis->size = 64;
 }
 
-static int WybierzTryb( Win *okno, const char *cNumer )
+static int WybierzTryb( Win *okno, const char *cNumer, int *dKoniec )
 {
    OknoTrybu oTryb = { 0 };
    Control  *oOk;
    Control  *oAnuluj;
    char      cTekst[ 400 ];
 
-   oTryb.okno = DialogCreate( okno, "Wystaw w trybie offline", 520, 200 );
+   oTryb.okno = DialogCreate( okno, "Wystaw w trybie offline", 520, 240 );
    StringFormat( cTekst, "Faktura %s - tryb wystawienia:", cNumer );
    SayCreate( oTryb.okno, 20, 15, 54, 20, cTekst );
    oTryb.aTryb[ 0 ] = RadioButtonCreate( oTryb.okno, 20,  45, 480, 20, "offline24 - z wyboru, wysyłka do następnego dnia roboczego" );
    oTryb.aTryb[ 1 ] = RadioButtonCreate( oTryb.okno, 20,  75, 480, 20, "offline - ogłoszona niedostępność KSeF" );
    oTryb.aTryb[ 2 ] = RadioButtonCreate( oTryb.okno, 20, 105, 480, 20, "awaryjny - ogłoszona awaria KSeF (7 dni roboczych)" );
    CheckBoxSetChecked( oTryb.aTryb[ 0 ], T );
+   for( int i = 0; i < 3; ++i )
+   {
+      ControlSetAction( oTryb.aTryb[ i ], TrybZmiana, &oTryb );
+   }
 
-   oOk     = ButtonCreate( oTryb.okno, 310, 152, 90, 28, "OK" );
-   oAnuluj = ButtonCreate( oTryb.okno, 410, 152, 90, 28, "Anuluj" );
+   SayCreate( oTryb.okno, 40, 140, 0, 20, "Koniec niedostępności / awarii:" );
+   oTryb.KONIEC = EditCreate( oTryb.okno, 335, 137, 110, 24, "" );
+   EditSetDate( oTryb.KONIEC, Date() );
+   ControlSetEnabled( oTryb.KONIEC, F );
+
+   oOk     = ButtonCreate( oTryb.okno, 310, 192, 90, 28, "OK" );
+   oAnuluj = ButtonCreate( oTryb.okno, 410, 192, 90, 28, "Anuluj" );
    ButtonSetDefault( oOk, T );
    ControlSetAction( oOk, TrybOk, &oTryb );
    ButtonSetCancel( oAnuluj, T );
@@ -380,7 +395,18 @@ static int WybierzTryb( Win *okno, const char *cNumer )
    WinCenter( oTryb.okno );
    DialogShowModal( oTryb.okno );
 
+   *dKoniec = oTryb.dKoniec;
+
    return oTryb.nTryb;
+}
+
+static void TrybZmiana( Control *radio, void *data )
+{
+   OknoTrybu *oTryb = ( OknoTrybu * )data;
+
+   UNUSED( radio );
+
+   ControlSetEnabled( oTryb->KONIEC, !CheckBoxChecked( oTryb->aTryb[ 0 ] ) );
 }
 
 static void TrybOk( Control *button, void *data )
@@ -394,6 +420,7 @@ static void TrybOk( Control *button, void *data )
       if( CheckBoxChecked( oTryb->aTryb[ i ] ) )
          oTryb->nTryb = i + 1;
    }
+   oTryb->dKoniec = IIF( EditDate( oTryb->KONIEC ) == 0, Date(), EditDate( oTryb->KONIEC ) );
    DialogEnd( oTryb->okno, 1 );
 }
 
@@ -404,9 +431,9 @@ static void TrybAnuluj( Control *button, void *data )
    DialogEnd( ( ( OknoTrybu * )data )->okno, 0 );
 }
 
-static int Termin( int nTryb, int dWystawienia )
+static int Termin( int nTryb, int dWystawienia, int dKoniec )
 {
-   int dOd = IIF( Date() > dWystawienia, Date(), dWystawienia );
+   int dOd = IIF( dKoniec > dWystawienia, dKoniec, dWystawienia );
 
    if( nTryb == 1 )
       return DodajRobocze( dWystawienia, 1 );

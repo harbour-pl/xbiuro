@@ -21,8 +21,8 @@ napisany w C na bibliotece [XWGUI](https://github.com/harbour-pl/xwgui). Baza da
 
 ## Budowanie
 
-W MSYS2 clang64, z [XWGUI](https://github.com/harbour-pl/xwgui) w katalogu obok (`../xwgui`) i z libharu
-(`pacman -S mingw-w64-clang-x86_64-libharu`):
+W MSYS2 clang64, z [XWGUI](https://github.com/harbour-pl/xwgui) w katalogu obok (`../xwgui`), z libharu, curl
+i OpenSSL (`pacman -S mingw-w64-clang-x86_64-libharu mingw-w64-clang-x86_64-curl mingw-w64-clang-x86_64-openssl`):
 
 ```sh
 make

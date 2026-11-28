@@ -492,7 +492,7 @@ static xBool Zapisz( const char *cNazwa, const char *cNip, int nSrodowisko, cons
 
 static void Dodaj( Toolbar *toolbar, void *data )
 {
-   OknoTokenow *oDialog = ( OknoTokenow * )data;
+   OknoTokenow *oDialog  = ( OknoTokenow * )data;
    Control     *GetList[ 3 ];
    long         nRecNo;
    int          nSrodowisko;

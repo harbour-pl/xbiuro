@@ -1,6 +1,6 @@
 /*
  * Program...: xBiuro
- * Plik......: src/opodatkowanie.c
+ * Plik......: src/biuro/opodatkowanie.c
  *
  */
 

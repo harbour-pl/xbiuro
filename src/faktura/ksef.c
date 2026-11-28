@@ -524,7 +524,7 @@ char *KsefZaszyfruj( const char *cDane )
 
 char *KsefOdszyfruj( const char *cZapis )
 {
-   Bytes *klucz = KluczInstalacji();
+   Bytes *klucz  = KluczInstalacji();
    Bytes  dane;
    Bytes  iv;
    Bytes  tekst;

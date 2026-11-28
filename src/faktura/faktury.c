@@ -1084,10 +1084,10 @@ static void PodgladZamknij( Toolbar *toolbar, void *data )
 
 static xBool DrukPdf( Biuro *biuro, const char *cPlik, char *cBlad, int nRozmiar )
 {
-   static const double aKolumna[] = { 40, 60, 245, 290, 320, 380, 440, 470, 515, 555 };
-   static const char  *aTytul[]   = { "Lp", "Nazwa towaru / usługi", "Ilość", "J.m.", "Cena netto", "Netto", "VAT", "Kwota VAT", "Brutto" };
-   static const xBool  aPrawo[]   = { T, F, T, F, T, T, T, T, T };
-   static const double aSumy[]    = { 320, 440, 470, 515, 555 };
+   static const double aKolumna[]   = { 40, 60, 245, 290, 320, 380, 440, 470, 515, 555 };
+   static const char  *aTytul[]     = { "Lp", "Nazwa towaru / usługi", "Ilość", "J.m.", "Cena netto", "Netto", "VAT", "Kwota VAT", "Brutto" };
+   static const xBool  aPrawo[]     = { T, F, T, F, T, T, T, T, T };
+   static const double aSumy[]      = { 320, 440, 470, 515, 555 };
    static const xBool  aSumyPrawo[] = { F, T, T, T };
 
    HPDF_Doc   pPdf     = HPDF_New( NULL, NULL );

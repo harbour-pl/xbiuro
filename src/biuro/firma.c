@@ -1,6 +1,6 @@
 /*
  * Program...: xBiuro
- * Plik......: src/firma.c
+ * Plik......: src/biuro/firma.c
  *
  */
 
@@ -155,6 +155,7 @@ void FirmaNazwa( Biuro *biuro, int firma, char *nazwa, int rozmiar )
 xBool FirmaNipPoprawny( const char *cNip )
 {
    static const int aWaga[] = { 6, 5, 7, 2, 3, 4, 5, 6, 7 };
+
    char cTekst[ 64 ];
    char cCyfry[ 64 ];
    char cBezKresek[ 64 ];

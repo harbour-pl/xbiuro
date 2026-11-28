@@ -1,3 +1,9 @@
+/*
+ * Program...: xBiuro
+ * Plik......: src/faktura/faktura.h
+ *
+ */
+
 #ifndef FAKTURA_H
 #define FAKTURA_H
 

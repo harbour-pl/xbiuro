@@ -1,6 +1,6 @@
 /*
  * Program...: xBiuro
- * Plik......: src/przelew.c
+ * Plik......: src/biuro/przelew.c
  *
  */
 
