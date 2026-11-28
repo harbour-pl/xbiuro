@@ -1,0 +1,2 @@
+# Każdy plik tekstowy ma końce linii LF, także po pobraniu w Windows
+* text=auto eol=lf

@@ -1,0 +1,8 @@
+# xBiuro
+*.dbf
+*.dbt
+*.exe
+.vscode
+dane-2026
+tmp
+lib

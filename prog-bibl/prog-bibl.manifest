@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!-- Wspólne biblioteki xBiuro: Windows szuka ich w prog-bibl/ dzięki zależności w manifeście xbiuro.exe -->
+<assembly xmlns="urn:schemas-microsoft-com:asm.v1" manifestVersion="1.0">
+  <assemblyIdentity type="win32" name="prog-bibl" version="1.0.0.0" processorArchitecture="amd64"/>
+  <file name="libxwgui.dll"/>
+  <file name="libxrdd.dll"/>
+  <file name="libbiuro.dll"/>
+  <file name="libxsiec.dll"/>
+  <file name="libhpdf.dll"/>
+  <file name="zlib1.dll"/>
+  <file name="libpng16-16.dll"/>
+  <file name="libcurl-4.dll"/>
+  <file name="libcrypto-3-x64.dll"/>
+  <file name="libssl-3-x64.dll"/>
+  <file name="libssh2-1.dll"/>
+  <file name="libidn2-0.dll"/>
+  <file name="libbrotlidec.dll"/>
+  <file name="libbrotlicommon.dll"/>
+  <file name="libzstd.dll"/>
+  <file name="libnghttp2-14.dll"/>
+  <file name="libngtcp2_crypto_ossl-0.dll"/>
+  <file name="libngtcp2-16.dll"/>
+  <file name="libnghttp3-9.dll"/>
+  <file name="libpsl-5.dll"/>
+  <file name="libiconv-2.dll"/>
+  <file name="libunistring-5.dll"/>
+  <file name="libintl-8.dll"/>
+</assembly>
